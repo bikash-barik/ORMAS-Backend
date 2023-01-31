@@ -7,7 +7,7 @@ import {
   UpdateOfficerProfile,
 } from "../../controllers/Content Management/OfficerProfileController.js";
 const router = express.Router();
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../../middleware/authMiddleware.js";
 
 router.route("/").get(protect, getOfficerProfiles);
 router

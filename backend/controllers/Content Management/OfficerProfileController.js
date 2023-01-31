@@ -1,4 +1,5 @@
-import OfficerProfile from "../../models/Content Management/OfficerProfileModel";
+// import OfficerProfile from "../../models/Content Management/OfficerProfileModel";
+import OfficerProfile from "../../models/Content Management/OfficerProfileModel.js";
 import asyncHandler from "express-async-handler";
 
 // @desc    Get logged in user notes
@@ -37,9 +38,9 @@ const CreateOfficerProfile = asyncHandler(async (req, res) => {
   } else {
     const officerProfile = new OfficerProfile({ user: req.user._id, officername, designation, serial,createdon,photo });
 
-    const CreateOfficerProfile = await officerProfile.save();
+    const createdOfficerProfile = await officerProfile.save();
 
-    res.status(201).json(CreateOfficerProfile);
+    res.status(201).json(createdOfficerProfile);
   }
 });
 
@@ -91,4 +92,4 @@ const UpdateOfficerProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { getOfficerProfileById, getOfficerProfiles, CreateNote, DeleteNote, UpdateNote };
+export { getOfficerProfileById, getOfficerProfiles,CreateOfficerProfile,DeleteOfficerProfile,UpdateOfficerProfile };
