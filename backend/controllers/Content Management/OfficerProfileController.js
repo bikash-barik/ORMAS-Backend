@@ -2,16 +2,16 @@
 import OfficerProfile from "../../models/Content Management/OfficerProfileModel.js";
 import asyncHandler from "express-async-handler";
 
-// @desc    Get logged in user notes
-// @route   GET /api/notes
+// @desc    Get logged in user OfficerProfiles
+// @route   GET /api/OfficerProfiles
 // @access  Private
 const getOfficerProfiles = asyncHandler(async (req, res) => {
   const officerprofiles = await OfficerProfile.find({ user: req.user._id });
   res.json(officerprofiles);
 });
 
-//@description     Fetch single Note
-//@route           GET /api/notes/:id
+//@description     Fetch single OfficerProfile
+//@route           GET /api/OfficerProfiles/:id
 //@access          Public
 const getOfficerProfileById = asyncHandler(async (req, res) => {
   const officerprofile = await OfficerProfile.findById(req.params.id);
@@ -25,18 +25,18 @@ const getOfficerProfileById = asyncHandler(async (req, res) => {
   res.json(officerprofile);
 });
 
-//@description     Create single Note
-//@route           GET /api/notes/create
+//@description     Create single OfficerProfile
+//@route           GET /api/OfficerProfiles/create
 //@access          Private
 const CreateOfficerProfile = asyncHandler(async (req, res) => {
-  const { officername, designation, serial, createdon,photo } = req.body;
+  const { officername,qualification, designation, serial, createdon,photo } = req.body;
 
-  if (!officername || !designation || !serial || !createdon || !photo) {
+  if (!officername || !qualification || !designation || !serial || !createdon || !photo) {
     res.status(400);
     throw new Error("Please Fill all the feilds");
     return;
   } else {
-    const officerProfile = new OfficerProfile({ user: req.user._id, officername, designation, serial,createdon,photo });
+    const officerProfile = new OfficerProfile({ user: req.user._id, officername,qualification, designation, serial,createdon,photo });
 
     const createdOfficerProfile = await officerProfile.save();
 
@@ -44,8 +44,8 @@ const CreateOfficerProfile = asyncHandler(async (req, res) => {
   }
 });
 
-//@description     Delete single Note
-//@route           GET /api/notes/:id
+//@description     Delete single OfficerProfile
+//@route           GET /api/OfficerProfiles/:id
 //@access          Private
 const DeleteOfficerProfile = asyncHandler(async (req, res) => {
   const officerProfile = await OfficerProfile.findById(req.params.id);
@@ -64,11 +64,11 @@ const DeleteOfficerProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update a note
-// @route   PUT /api/notes/:id
+// @desc    Update a OfficerProfile
+// @route   PUT /api/OfficerProfiles/:id
 // @access  Private
 const UpdateOfficerProfile = asyncHandler(async (req, res) => {
-  const { officername, designation, serial, createdon,photo } = req.body;
+  const { officername,qualification, designation, serial, createdon,photo } = req.body;
 
   const officerProfile = await OfficerProfile.findById(req.params.id);
 
@@ -80,6 +80,7 @@ const UpdateOfficerProfile = asyncHandler(async (req, res) => {
   if (officerProfile) {
     officerProfile.officername = officername;
     officerProfile.designation = designation;
+    officerProfile.qualification = qualification;
     officerProfile.serial = serial;
     officerProfile.createdon = createdon;
     officerProfile.photo = photo;

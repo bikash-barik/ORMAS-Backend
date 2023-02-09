@@ -7,6 +7,9 @@ import cors from "cors";
 import noteRoutes from "./routes/noteRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import officerProfileRouters from "./routes/Content Management/officerProfileRouters.js";
+import documentRouters from "./routes/Manage Application/documentRouters.js";
+import newsUpdateRouters from "./routes/Manage Application/newsUpdateRouters.js";
+import importantLinkRouters from "./routes/Manage Application/importantLinkRouters.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -22,6 +25,11 @@ app.use(express.json()); // to accept json data
 app.use("/api/notes", noteRoutes);
 app.use("/api/officersprofiles", officerProfileRouters);
 app.use("/api/users", userRoutes);
+
+// Manage Application
+app.use("/api/documents", documentRouters);
+app.use("/api/newsUpdates", newsUpdateRouters);
+app.use("/api/importantLinks", importantLinkRouters);
 
 // --------------------------deployment------------------------------
 const __dirname = path.resolve();

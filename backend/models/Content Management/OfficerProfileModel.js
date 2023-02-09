@@ -6,6 +6,10 @@ const officerProfileSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    qualification:{
+      type: String,
+      required: true,
+    },
     designation: {
       type: String,
       required: true,
