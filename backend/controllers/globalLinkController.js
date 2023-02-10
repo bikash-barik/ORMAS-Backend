@@ -106,7 +106,7 @@ const deleteGlobalLink = asyncHandler(async (req, res) => {
   
   // Return a success message
   res.status(200).json({
-    globalLink: deleteGlobalLink
+    globalLink: deletedGlobalLink
   });
 });
 
