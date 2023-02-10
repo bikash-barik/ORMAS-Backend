@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 import permissionRoutes from "./routes/permissionRoutes.js";
 import globalLinkRoutes from "./routes/globalLinkRoutes.js";
 import primaryLinkRoutes from "./routes/primaryLinkRoutes.js";
+import contentRoutes from "./routes/contentRoutes.js";
 import officerProfileRouters from "./routes/Content Management/officerProfileRouters.js";
 import documentRouters from "./routes/Manage Application/documentRouters.js";
 import newsUpdateRouters from "./routes/Manage Application/newsUpdateRouters.js";
@@ -31,6 +32,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/permissions", permissionRoutes);
 app.use("/api/globallinks", globalLinkRoutes);
 app.use("/api/primarylinks", primaryLinkRoutes);
+app.use("/api/content", contentRoutes);
 
 // Manage Application
 app.use("/api/documents", documentRouters);
