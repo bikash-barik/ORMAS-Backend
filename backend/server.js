@@ -7,6 +7,7 @@ import cors from "cors";
 import noteRoutes from "./routes/noteRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import permissionRoutes from "./routes/permissionRoutes.js";
+import globalLinkRoutes from "./routes/globalLinkRoutes.js";
 import officerProfileRouters from "./routes/Content Management/officerProfileRouters.js";
 import documentRouters from "./routes/Manage Application/documentRouters.js";
 import newsUpdateRouters from "./routes/Manage Application/newsUpdateRouters.js";
@@ -27,6 +28,7 @@ app.use("/api/notes", noteRoutes);
 app.use("/api/officersprofiles", officerProfileRouters);
 app.use("/api/users", userRoutes);
 app.use("/api/permissions", permissionRoutes);
+app.use("/api/globallinks", globalLinkRoutes);
 
 // Manage Application
 app.use("/api/documents", documentRouters);
