@@ -2,7 +2,10 @@ import asyncHandler from "express-async-handler";
 import Content from "../models/contentModel.js";
 
 
-// Create Content
+
+// @desc    Create content
+// @route   POST /api/content
+// @access  Public
 const createContent = asyncHandler(async (req, res) => {
   const { global_link, primary_link, title, content } = req.body;
 
@@ -20,7 +23,9 @@ const createContent = asyncHandler(async (req, res) => {
   });
 });
 
-// Get all Contents
+// @desc    Get all content
+// @route   GET /api/content
+// @access  Public
 const getContents = asyncHandler(async (req, res) => {
   const contents = await Content.find();
 
@@ -29,7 +34,9 @@ const getContents = asyncHandler(async (req, res) => {
   });
 });
 
-// Get Content by ID
+// @desc    Get content by id
+// @route   GET /api/content/:id
+// @access  Public
 const getContentById = asyncHandler(async (req, res) => {
   const contentId = req.params.id;
 
@@ -45,7 +52,9 @@ const getContentById = asyncHandler(async (req, res) => {
   });
 });
 
-// Update Content
+// @desc    Update content
+// @route   PUT /api/content/:id
+// @access  Public
 const updateContent = asyncHandler(async (req, res) => {
   const contentId = req.params.id;
   const { global_link, primary_link, title, content } = req.body;
@@ -69,7 +78,9 @@ const updateContent = asyncHandler(async (req, res) => {
   });
 });
 
-// Delete Content
+// @desc    Delete content
+// @route   DELETE /api/content/:id
+// @access  Public
 const deleteContent = asyncHandler(async (req, res) => {
   const contentId = req.params.id;
 
@@ -87,5 +98,29 @@ const deleteContent = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Toggle publish status of content
+// @route   PUT /api/content/status/:id
+// @access  Public
+const togglePublishStatus = asyncHandler(async (req, res) => {
+  const contentId = req.params.id;
 
-export { getContents, getContentById, createContent, updateContent, deleteContent };
+  const content = await Content.findById(contentId);
+
+  if (content) {
+    if (content.publish_status === "active") {
+      content.publish_status = "inactive";
+    } else {
+      content.publish_status = "active";
+    }
+    const updatedContent = await content.save();
+    res.status(200).json({
+      content: updatedContent
+    });
+  } else {
+    res.status(400);
+    throw new Error("User not found");
+  }
+});
+
+
+export { getContents, getContentById, createContent, updateContent, deleteContent, togglePublishStatus };

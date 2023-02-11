@@ -3,7 +3,7 @@ import GlobalLink from "../models/globalLinkModel.js";
 
 
 // @desc    Get all global links
-// @route   GET /api/global-links
+// @route   GET /api/globallinks
 // @access  Public
 const getGlobalLinks = asyncHandler(async (req, res) => {
   const globalLinks = await GlobalLink.find();
@@ -14,7 +14,7 @@ const getGlobalLinks = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get single global link
-// @route   GET /api/global-links/:id
+// @route   GET /api/globallinks/:id
 // @access  Public
 const getGlobalLink = asyncHandler(async (req, res) => {
   const globalLink = await GlobalLink.findById(req.params.id);
@@ -29,6 +29,9 @@ const getGlobalLink = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Add global link
+// @route   POST /api/globallinks
+// @access  Public
 const addGlobalLink = asyncHandler(async (req, res) => {
   const { link_name, sl_no, link_type, function_name, window_status, view_in_menu_item, view_in_footer_link, publish_status } = req.body;
   
@@ -50,6 +53,9 @@ const addGlobalLink = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Update global link
+// @route   PUT /api/globallinks/:id
+// @access  Public
 const updateGlobalLink = asyncHandler(async (req, res) => {
   const globalLinkId = req.params.id;
   
@@ -91,6 +97,9 @@ const updateGlobalLink = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Delete global link
+// @route   DELETE /api/globallinks/:id
+// @access  Public
 const deleteGlobalLink = asyncHandler(async (req, res) => {
   const globalLinkId = req.params.id;
   

@@ -72,7 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // @desc    GET user profile
 // @route   GET /api/users/profile
-// @access  Private
+// @access  Public
 const updateUserProfile = asyncHandler(async (req, res) => {
   const { full_name, sl_no, gender, date_of_birth, image, office_phone, mobile_no, email, password, privilege, status } = req.body;
   const user = await User.findById(req.params.id);
@@ -112,6 +112,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Toggle status ( active / inactive )
+// @route   POST /api/users/status/:id
+// @access  Public
 const toggleStatus = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 

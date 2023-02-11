@@ -3,7 +3,7 @@ import PrimaryLink from "../models/primaryLinkModel.js";
 
 
 // @desc    Get all primary links
-// @route   GET /api/primary-links
+// @route   GET /api/primarylinks
 // @access  Public
 const getPrimaryLinks = asyncHandler(async (req, res) => {
   const primaryLinks = await PrimaryLink.find();
@@ -14,7 +14,7 @@ const getPrimaryLinks = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get single primary link
-// @route   GET /api/primary-links/:id
+// @route   GET /api/primarylinks/:id
 // @access  Public
 const getPrimaryLink = asyncHandler(async (req, res) => {
   const primaryLink = await PrimaryLink.findById(req.params.id);
@@ -29,6 +29,9 @@ const getPrimaryLink = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Add primary link
+// @route   POST /api/primarylinks
+// @access  Public
 const addPrimaryLink = asyncHandler(async (req, res) => {
   const { global_link, link_name, sl_no, link_type, function_name, window_status, publish_status } = req.body;
   
@@ -49,6 +52,9 @@ const addPrimaryLink = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Update primary link
+// @route   PUT /api/primarylinks/:id
+// @access  Public
 const updatePrimaryLink = asyncHandler(async (req, res) => {
   const primaryLinkId = req.params.id;
   
@@ -88,6 +94,9 @@ const updatePrimaryLink = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Delete primary link
+// @route   DELETE /api/primarylinks/:id
+// @access  Public
 const deletePrimaryLink = asyncHandler(async (req, res) => {
   const primaryLinkId = req.params.id;
   

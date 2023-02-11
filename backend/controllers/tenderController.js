@@ -2,7 +2,9 @@ import asyncHandler from "express-async-handler";
 import Tender from "../models/tenderModel.js";
 
 
-// Create Tender
+// @desc    Create tender
+// @route   POST /api/tender
+// @access  Public
 const createTender = asyncHandler(async (req, res) => {
   const { 
     tender_no,
@@ -37,7 +39,9 @@ const createTender = asyncHandler(async (req, res) => {
   });
 });
 
-// Get all tenders
+// @desc    Get all tenders
+// @route   GET /api/tender
+// @access  Public
 const getTenders = asyncHandler(async (req, res) => {
   const tenders = await Tender.find();
 
@@ -46,7 +50,9 @@ const getTenders = asyncHandler(async (req, res) => {
   });
 });
 
-// Get a single tender by id
+// @desc    Get a single tender by id
+// @route   POST /api/tender/:id
+// @access  Public
 const getTender = asyncHandler(async (req, res) => {
   const tender = await Tender.findById(req.params.id);
 
@@ -60,7 +66,9 @@ const getTender = asyncHandler(async (req, res) => {
   });
 });
 
-//Update tender
+// @desc    Update tender
+// @route   PUT /api/tender/:id
+// @access  Public
 const updateTender = asyncHandler(async (req, res) => {
   const tenderId = req.params.id;
   const { tender_no, tender_headline, closing_date, closing_time, opening_date, opening_time, description, document_one, document_two, document_three } = req.body;
@@ -90,7 +98,9 @@ const updateTender = asyncHandler(async (req, res) => {
   });
 });
 
-//Delete tender
+// @desc    Delete tender
+// @route   DELETE /api/tender/:id
+// @access  Public
 const deleteTender = asyncHandler(async (req, res) => {
   const tenderId = req.params.id;
   
