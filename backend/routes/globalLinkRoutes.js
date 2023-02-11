@@ -1,11 +1,12 @@
 import express from "express";
 import { addGlobalLink, deleteGlobalLink, getGlobalLink, getGlobalLinks, updateGlobalLink } from "../controllers/globalLinkController.js";
+import { protect } from '../middleware/authMiddleware.js'
 const router = express.Router();
 
-router.post("/", addGlobalLink);
-router.get("/", getGlobalLinks);
+router.post("/", protect, addGlobalLink);
+router.get("/", protect, getGlobalLinks);
 router.get("/:id", getGlobalLink);
-router.put("/:id", updateGlobalLink);
-router.delete("/:id", deleteGlobalLink);
+router.put("/:id", protect, updateGlobalLink);
+router.delete("/:id", protect, deleteGlobalLink);
 
 export default router;

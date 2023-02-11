@@ -3,55 +3,30 @@ import bcrypt from "bcryptjs";
 
 const userSchema = mongoose.Schema(
   {
-    full_name: {
-      type: String,
-      required: true
-    },
-    sl_no: {
-      type: Number,
-      required: true
-    },
-    gender: {
-      type: String,
-      required: true
-    },
-    date_of_birth: {
-      type: Date,
-      required: true
-    },
-    image: {
+    name: {
       type: String,
       required: true,
-      default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-    },
-    office_phone: {
-      type: String,
-      required: true
-    },
-    mobile_no: {
-      type: String,
-      required: true
-    },
-    username: { //user id in the frontend
-      type: String,
-      required: true
     },
     email: {
       type: String,
-      required: true
+      required: true,
+      unique: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
-    privilege: {
-      type: String,
-      required: true
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
-    status: {
+    pic: {
       type: String,
-      default: "inactive"
-    }
+      required: true,
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    },
   },
   {
     timestamps: true,

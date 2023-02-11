@@ -1,11 +1,12 @@
 import express from "express";
 import { createTender, deleteTender, getTender, getTenders, updateTender } from "../controllers/tenderController.js";
+import { protect } from '../middleware/authMiddleware.js'
 const router = express.Router();
 
-router.post("/", createTender);
-router.get("/", getTenders);
+router.post("/", protect, createTender);
+router.get("/", protect, getTenders);
 router.get("/:id", getTender);
-router.put("/:id", updateTender);
-router.delete("/:id", deleteTender);
+router.put("/:id", protect, updateTender);
+router.delete("/:id", protect, deleteTender);
 
 export default router;
