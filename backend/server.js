@@ -16,6 +16,7 @@ import officerProfileRouters from "./routes/Content Management/officerProfileRou
 import documentRouters from "./routes/Manage Application/documentRouters.js";
 import newsUpdateRouters from "./routes/Manage Application/newsUpdateRouters.js";
 import importantLinkRouters from "./routes/Manage Application/importantLinkRouters.js";
+import videoRoutes from "./routes/Manage Application/videoRouter.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -42,6 +43,7 @@ app.use("/api/tenders", tenderRoutes);
 app.use("/api/documents", documentRouters);
 app.use("/api/newsUpdates", newsUpdateRouters);
 app.use("/api/importantLinks", importantLinkRouters);
+app.use("/api/videos", videoRoutes);
 
 // --------------------------deployment------------------------------
 const __dirname = path.resolve();
