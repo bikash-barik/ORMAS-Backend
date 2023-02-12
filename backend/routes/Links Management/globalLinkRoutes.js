@@ -1,6 +1,6 @@
 import express from "express";
-import { addGlobalLink, deleteGlobalLink, getGlobalLink, getGlobalLinks, updateGlobalLink } from "../controllers/globalLinkController.js";
-import { protect } from '../middleware/authMiddleware.js'
+import { addGlobalLink, deleteGlobalLink, getGlobalLink, getGlobalLinks, updateGlobalLink } from "../../controllers/Links Management/globalLinkController.js";
+import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
 router.post("/", protect, addGlobalLink);

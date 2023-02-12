@@ -1,6 +1,6 @@
 import express from "express";
-import { addPrimaryLink, deletePrimaryLink, getPrimaryLink, getPrimaryLinks, updatePrimaryLink } from "../controllers/primaryLinkController.js";
-import { protect } from '../middleware/authMiddleware.js'
+import { addPrimaryLink, deletePrimaryLink, getPrimaryLink, getPrimaryLinks, updatePrimaryLink } from "../../controllers/Links Management/primaryLinkController.js";
+import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
 router.post("/", protect, addPrimaryLink);

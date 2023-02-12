@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
-import GlobalLink from "../models/globalLinkModel.js";
-import Permission from "../models/permissionModel.js";
+import GlobalLink from "../../models/Links Management/globalLinkModel.js";
+import Permission from "../../models/permissionModel.js";
 
 
 // @desc    Get all global links
