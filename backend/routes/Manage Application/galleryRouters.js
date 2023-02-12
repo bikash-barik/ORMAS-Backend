@@ -1,20 +1,14 @@
 import express from "express";
-import {
-  getgalleryById,
-  getgallerys,
-  Creategallery,
-  Deletegallery,
-  Updategallery,
-} from "../../controllers/Manage Application/galleryController.js";
+import { getGallerys, getGalleryById, CreateGallery, UpdateGallery, DeleteGallery } from "../../controllers/Manage Application/galleryController.js";
 const router = express.Router();
 import { protect } from "../../middleware/authMiddleware.js";
 
-router.route("/").get(getDocuments);
+router.route("/").get(getGallerys);
 router
   .route("/:id")
-  .get(getDocumentById)
-  .delete(protect, DeleteDocument)
-  .put(protect, UpdateDocument);
-router.route("/create").post(protect, CreateDocument);
+  .get(getGalleryById)
+  .delete(protect, UpdateGallery)
+  .put(protect, DeleteGallery);
+router.route("/create").post(protect, CreateGallery);
 
 export default router;

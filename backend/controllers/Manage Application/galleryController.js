@@ -161,4 +161,4 @@ const UpdateGallery = asyncHandler(async (req, res) => {
   }
 });
 
-export { getGalleryById, getGallerys,CreateGallery,DeleteGallery,UpdateGallery };
+export { getGalleryById, getGallerys, CreateGallery, DeleteGallery, UpdateGallery };
