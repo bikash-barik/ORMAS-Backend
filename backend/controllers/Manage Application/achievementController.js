@@ -46,23 +46,23 @@ const createAchievement = asyncHandler(async (req, res) => {
 // @route   GET /api/achievement
 // @access  Private (requires manager rights)
 const getAchievements = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if (!user.name && user.privilege !== "superAdmin") {
-    const permission = await Permission.find({
-      subUser: user._id,
-      category: "application",
-      feature: "achievement",
-    });
+  // const user = req.user;
+  // if (!user.name && user.privilege !== "superAdmin") {
+  //   const permission = await Permission.find({
+  //     subUser: user._id,
+  //     category: "application",
+  //     feature: "achievement",
+  //   });
 
-    if (permission.length === 0) {
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-    if (!(permission[0].managerRights === true)) {
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-  }
+  //   if (permission.length === 0) {
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  //   if (!(permission[0].managerRights === true)) {
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  // }
   const achievements = await Achievement.find();
 
   res.status(200).json({

@@ -45,23 +45,23 @@ const createContent = asyncHandler(async (req, res) => {
 // @route   GET /api/content
 // @access  Private (requires manager rights)
 const getContents = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if(!user.name && user.privilege !== "superAdmin"){
-    const permission = await Permission.find({
-      subUser: user._id,
-      category: 'content',
-      feature: 'content'
-    });
+  // const user = req.user;
+  // if(!user.name && user.privilege !== "superAdmin"){
+  //   const permission = await Permission.find({
+  //     subUser: user._id,
+  //     category: 'content',
+  //     feature: 'content'
+  //   });
     
-    if(permission.length === 0){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-    if(!(permission[0].managerRights === true)){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-  }
+  //   if(permission.length === 0){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  //   if(!(permission[0].managerRights === true)){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  // }
   const contents = await Content.find();
 
   res.status(200).json({

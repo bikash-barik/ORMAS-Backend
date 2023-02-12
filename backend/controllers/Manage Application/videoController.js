@@ -55,23 +55,23 @@ const createVideo = asyncHandler(async (req, res) => {
 // @route   GET /api/video
 // @access  Private (requires manager rights)
 const getVideos = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if(!user.name && user.privilege !== "superAdmin"){
-    const permission = await Permission.find({
-      subUser: user._id,
-      category: 'application',
-      feature: 'video'
-    });
+  // const user = req.user;
+  // if(!user.name && user.privilege !== "superAdmin"){
+  //   const permission = await Permission.find({
+  //     subUser: user._id,
+  //     category: 'application',
+  //     feature: 'video'
+  //   });
 
-    if(permission.length === 0){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-    if(!(permission[0].managerRights === true)){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-  }
+  //   if(permission.length === 0){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  //   if(!(permission[0].managerRights === true)){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  // }
   const videos = await Video.find();
 
   res.status(200).json({
