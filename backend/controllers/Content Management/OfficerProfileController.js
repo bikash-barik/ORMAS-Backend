@@ -24,7 +24,8 @@ const getOfficerProfiles = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const officerprofiles = await OfficerProfile.find({ user: req.user._id });
+  // const officerprofiles = await OfficerProfile.find({ user: req.user._id });
+  const officerprofiles = await OfficerProfile.find();
   res.json(officerprofiles);
 });
 
