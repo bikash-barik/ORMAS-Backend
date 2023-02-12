@@ -1,6 +1,6 @@
 import express from "express";
-import { createContent, deleteContent, getContentById, getContents, togglePublishStatus, updateContent } from "../controllers/contentController.js";
-import { protect } from '../middleware/authMiddleware.js'
+import { createContent, deleteContent, getContentById, getContents, togglePublishStatus, updateContent } from "../../controllers/Content Management/contentController.js";
+import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
 router.post("/", protect, createContent);

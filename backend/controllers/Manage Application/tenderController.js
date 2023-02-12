@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
-import Tender from "../models/tenderModel.js";
-import Permission from "../models/permissionModel.js";
+import Tender from "../../models/Manage Application/tenderModel.js";
+import Permission from "../../models/permissionModel.js";
 
 
 // @desc    Create tender

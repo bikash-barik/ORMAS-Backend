@@ -8,14 +8,15 @@ import noteRoutes from "./routes/noteRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import subUserRoutes from "./routes/subUserRoutes.js";
 import permissionRoutes from "./routes/permissionRoutes.js";
-import globalLinkRoutes from "./routes/globalLinkRoutes.js";
-import primaryLinkRoutes from "./routes/primaryLinkRoutes.js";
-import contentRoutes from "./routes/contentRoutes.js";
-import tenderRoutes from "./routes/tenderRoutes.js";
+import globalLinkRoutes from "./routes/Links Management/globalLinkRoutes.js";
+import primaryLinkRoutes from "./routes/Links Management/primaryLinkRoutes.js";
+import contentRoutes from "./routes/Content Management/contentRoutes.js";
+import tenderRoutes from "./routes/Manage Application/tenderRoutes.js";
 import officerProfileRouters from "./routes/Content Management/officerProfileRouters.js";
 import documentRouters from "./routes/Manage Application/documentRouters.js";
 import newsUpdateRouters from "./routes/Manage Application/newsUpdateRouters.js";
 import importantLinkRouters from "./routes/Manage Application/importantLinkRouters.js";
+import videoRoutes from "./routes/Manage Application/videoRouter.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -42,6 +43,7 @@ app.use("/api/tenders", tenderRoutes);
 app.use("/api/documents", documentRouters);
 app.use("/api/newsUpdates", newsUpdateRouters);
 app.use("/api/importantLinks", importantLinkRouters);
+app.use("/api/videos", videoRoutes);
 
 // --------------------------deployment------------------------------
 const __dirname = path.resolve();

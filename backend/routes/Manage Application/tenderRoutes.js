@@ -1,6 +1,6 @@
 import express from "express";
-import { createTender, deleteTender, getTender, getTenders, updateTender } from "../controllers/tenderController.js";
-import { protect } from '../middleware/authMiddleware.js'
+import { createTender, deleteTender, getTender, getTenders, updateTender } from "../../controllers/Manage Application/tenderController.js";
+import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
 router.post("/", protect, createTender);

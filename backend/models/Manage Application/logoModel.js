@@ -1,0 +1,12 @@
+import mongoose from "mongoose";
+// Logo Model
+const LogoSchema = new mongoose.Schema({
+  sl_no: { type: Number },
+  logo_title: { type: String },
+  photo: { type: String },
+  home_page_status: { type: String },
+  publish_status: { type: String },
+  timestamp: { type: Date, default: Date.now },
+});
+const Logo = mongoose.model("Logo", LogoSchema);
+export default Logo;

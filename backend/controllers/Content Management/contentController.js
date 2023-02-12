@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
-import Content from "../models/contentModel.js";
-import Permission from "../models/permissionModel.js";
+import Content from "../../models/Content Management/contentModel.js";
+import Permission from "../../models/permissionModel.js";
 
 // @desc    Create content
 // @route   POST /api/content

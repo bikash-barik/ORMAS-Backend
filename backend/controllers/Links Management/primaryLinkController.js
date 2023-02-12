@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
-import PrimaryLink from "../models/primaryLinkModel.js";
-import Permission from "../models/permissionModel.js";
+import PrimaryLink from "../../models/Links Management/primaryLinkModel.js";
+import Permission from "../../models/permissionModel.js";
 
 
 // @desc    Get all primary links
