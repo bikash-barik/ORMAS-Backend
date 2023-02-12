@@ -1,10 +1,28 @@
 import Gallery from "../../models/Manage Application/galleryModel.js";
+import Permission from "../../models/permissionModel.js";
 import asyncHandler from "express-async-handler";
 
 // @desc    Get logged in user Gallerys
 // @route   GET /api/Gallerys
-// @access  Private
+// @access  Private (requires manager rights)
 const getGallerys = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'gallery'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const gallerys = await Gallery.find({ user: req.user._id });
   res.json(gallerys);
 });
@@ -26,8 +44,25 @@ const getGalleryById = asyncHandler(async (req, res) => {
 
 //@description     Create single Gallery
 //@route           GET /api/Gallerys/create
-//@access          Private
+//@access          Private (requires author rights)
 const CreateGallery = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'gallery'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].authorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { headline,category, photo, status} = req.body;
 
   if (!headline || !category || !photo || !status) {
@@ -45,8 +80,25 @@ const CreateGallery = asyncHandler(async (req, res) => {
 
 //@description     Delete single Gallery
 //@route           GET /api/Gallerys/:id
-//@access          Private
+//@access          Private (requires manager rights)
 const DeleteGallery = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'gallery'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const gallery = await Gallery.findById(req.params.id);
 
   if (gallery.user.toString() !== req.user._id.toString()) {
@@ -65,8 +117,25 @@ const DeleteGallery = asyncHandler(async (req, res) => {
 
 // @desc    Update a Gallery
 // @route   PUT /api/Gallerys/:id
-// @access  Private
+// @access  Private (requires editor rights)
 const UpdateGallery = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'gallery'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].editorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { headline,category, photo, status} = req.body;
 
   const gallery = await Gallery.findById(req.params.id);
