@@ -19,6 +19,8 @@ import importantLinkRouters from "./routes/Manage Application/importantLinkRoute
 import videoRoutes from "./routes/Manage Application/videoRouter.js";
 import logoRoutes from "./routes/Manage Application/logoRouter.js";
 import bannerRoutes from "./routes/Manage Application/bannerRouter.js";
+import whatsNewRoutes from "./routes/Manage Application/whatsNewRouter.js";
+import feedbackRoutes from "./routes/Manage Application/feedbackRouter.js";
 import achievementRoutes from "./routes/Manage Application/achievementRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
@@ -50,6 +52,8 @@ app.use("/api/videos", videoRoutes);
 app.use("/api/logos", logoRoutes);
 app.use("/api/banners", bannerRoutes);
 app.use("/api/achievements", achievementRoutes);
+app.use("/api/whatsNews", whatsNewRoutes);
+app.use("/api/feedbacks", feedbackRoutes);
 
 // --------------------------deployment------------------------------
 const __dirname = path.resolve();
