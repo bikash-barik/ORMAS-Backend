@@ -1,25 +1,25 @@
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
+import SubUser from "../models/subUserModel.js";
 import Permission from "../models/permissionModel.js";
 
 //@description     Add permissions for a user
 //@route           POST /api/permissions/:userId
-//@access          Public
+//@access          Private
 const addPermissions = asyncHandler(async (req, res) => {
-  const userId = req.params.userId;
+  const subUserId = req.params.subUserId;
   const permissions = req.body.permissions;
 
-  const user = await User.findById(userId);
+  const subUser = await SubUser.findById(subUserId);
 
-  if (!user) {
+  if (!subUser) {
     res.status(404);
-    throw new Error("User Not Found");
+    throw new Error("SubUser Not Found");
   }
 
   // Create the permissions
   const list = permissions.map(permission => {
     return new Permission({
-      user: userId,
+      subUser: subUserId,
       feature: permission.feature,
       category: permission.category,
       authorRights: permission.authorRights,
@@ -46,17 +46,17 @@ const addPermissions = asyncHandler(async (req, res) => {
 //@route           GET /api/permissions/:userId
 //@access          Public
 const fetchPermissions = asyncHandler(async (req, res) => {
-  const userId = req.params.userId;
+  const subUserId = req.params.subUserId;
   
-  const user = await User.findById(userId);
+  const subUser = await SubUser.findById(subUserId);
   
-  if (!user) {
+  if (!subUser) {
     res.status(404);
     throw new Error("User Not Found");
   }
   
   // Find permissions by user ID
-  const permissions = await Permission.find({ user: userId });
+  const permissions = await Permission.find({ subUser: subUserId });
   
 
   // Return found permissions
