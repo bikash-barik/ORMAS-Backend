@@ -6,7 +6,7 @@ import Permission from "../models/permissionModel.js";
 
 // @desc    Create content
 // @route   POST /api/content
-// @access  Public
+// @access  Private (requires author rights)
 const createContent = asyncHandler(async (req, res) => {
 
   const user = req.user;
@@ -91,7 +91,7 @@ const getContentById = asyncHandler(async (req, res) => {
 
 // @desc    Update content
 // @route   PUT /api/content/:id
-// @access  Private (reqquires manager rights)
+// @access  Private (requires editor rights)
 const updateContent = asyncHandler(async (req, res) => {
   const user = req.user;
   if(!user.name && !user.privilege === "superAdmin"){
@@ -105,7 +105,7 @@ const updateContent = asyncHandler(async (req, res) => {
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
-    if(!(permission[0].managerRights === true)){
+    if(!(permission[0].editorRights === true)){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
