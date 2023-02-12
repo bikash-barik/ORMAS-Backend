@@ -24,13 +24,14 @@ const createLogo = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const { sl_no, logo_title, photo, home_page_status } = req.body;
+  const { sl_no, logo_title, photo, home_page_status, publish_status } = req.body;
 
   const newLogo = new Logo({
     sl_no,
     logo_title,
     photo,
     home_page_status,
+    publish_status
   });
 
   await newLogo.save();
@@ -67,16 +68,16 @@ const getLogo = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc Update Video
-// @route PUT /api/video/:id
+// @desc Update logo
+// @route PUT /api/logo/:id
 // @access Private (requires editor rights)
-const updateVideo = asyncHandler(async (req, res) => {
+const updateLogo = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user.name && user.privilege !== "superAdmin") {
     const permission = await Permission.find({
       subUser: user._id,
       category: "application",
-      feature: "video",
+      feature: "logo",
     });
 
     if (permission.length === 0) {
@@ -88,31 +89,31 @@ const updateVideo = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const video = await Video.findByIdAndUpdate(req.params.id, req.body, {
+  const logo = await Logo.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
 
-  if (!video) {
+  if (!logo) {
     res.status(404);
-    throw new Error("Video Not Found");
+    throw new Error("Logo Not Found");
   }
 
   res.status(200).json({
-    video,
+    logo,
   });
 });
 
-// @desc Delete Video
-// @route DELETE /api/video/:id
+// @desc Delete logo
+// @route DELETE /api/logo/:id
 // @access Private (requires editor rights)
-const deleteVideo = asyncHandler(async (req, res) => {
+const deleteLogo = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user.name && user.privilege !== "superAdmin") {
     const permission = await Permission.find({
       subUser: user._id,
       category: "application",
-      feature: "video",
+      feature: "logo",
     });
 
     if (permission.length === 0) {
@@ -124,23 +125,22 @@ const deleteVideo = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const video = await Video.findByIdAndDelete(req.params.id);
+  const logo = await Logo.findByIdAndDelete(req.params.id);
 
-  if (!video) {
+  if (!logo) {
     res.status(404);
-    throw new Error("Video Not Found");
+    throw new Error("Logo Not Found");
   }
 
   res.status(200).json({
-    success: true,
-    message: "Video deleted successfully",
+    logo
   });
 });
 
 // @desc Toggle Status for Logo
 // @route PUT /api/logo/:id/status
 // @access Private (requires editor rights)
-const toggleStatus = asyncHandler(async (req, res) => {
+const togglePublishStatus = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user.name && user.privilege !== "superAdmin") {
     const permission = await Permission.find({
@@ -172,10 +172,8 @@ const toggleStatus = asyncHandler(async (req, res) => {
   await logo.save();
 
   res.status(200).json({
-    success: true,
-    message: `Logo status has been updated to ${logo.publish_status}`,
     logo: logo,
   });
 });
 
-export { toggleStatus };
+export { getLogo, getLogos, createLogo, updateLogo, togglePublishStatus, deleteLogo };
