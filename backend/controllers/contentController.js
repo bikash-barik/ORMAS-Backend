@@ -10,7 +10,7 @@ import Permission from "../models/permissionModel.js";
 const createContent = asyncHandler(async (req, res) => {
 
   const user = req.user;
-  if(!user.name){
+  if(!user.name && !user.privilege === "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
@@ -48,7 +48,7 @@ const createContent = asyncHandler(async (req, res) => {
 // @access  Private (requires manager rights)
 const getContents = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name){
+  if(!user.name && !user.privilege === "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
@@ -94,7 +94,7 @@ const getContentById = asyncHandler(async (req, res) => {
 // @access  Private (reqquires manager rights)
 const updateContent = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name){
+  if(!user.name && !user.privilege === "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
@@ -137,7 +137,7 @@ const updateContent = asyncHandler(async (req, res) => {
 // @access  Private (requires manager rights)
 const deleteContent = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name){
+  if(!user.name && !user.privilege === "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
@@ -174,7 +174,7 @@ const deleteContent = asyncHandler(async (req, res) => {
 // @access  Private (requires publisher rights)
 const togglePublishStatus = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name){
+  if(!user.name && !user.privilege === "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
