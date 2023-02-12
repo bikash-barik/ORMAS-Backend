@@ -5,7 +5,8 @@ import asyncHandler from "express-async-handler";
 // @route   GET /api/notes
 // @access  Private
 const getNotes = asyncHandler(async (req, res) => {
-  const notes = await Note.find({ user: req.user._id });
+  // const notes = await Note.find({ user: req.user._id });
+  const notes = await Note.find();
   res.json(notes);
 });
 

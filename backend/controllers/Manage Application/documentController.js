@@ -23,7 +23,8 @@ const getDocuments = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const documents = await Document.find({ user: req.user._id });
+  // const documents = await Document.find({ user: req.user._id });
+  const documents = await Document.find();
   res.json(documents);
 });
 

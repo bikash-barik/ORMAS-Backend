@@ -23,7 +23,8 @@ const getNewsUpdates = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const newsUpdates = await NewsUpdate.find({ user: req.user._id });
+  // const newsUpdates = await NewsUpdate.find({ user: req.user._id });
+  const newsUpdates = await NewsUpdate.find();
   res.json(newsUpdates);
 });
 
