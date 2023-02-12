@@ -2,22 +2,21 @@ import asyncHandler from "express-async-handler";
 import Content from "../models/contentModel.js";
 import Permission from "../models/permissionModel.js";
 
-
-
 // @desc    Create content
 // @route   POST /api/content
 // @access  Private (requires author rights)
 const createContent = asyncHandler(async (req, res) => {
 
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
+    console.log('hello')
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
       feature: 'content'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
@@ -26,7 +25,6 @@ const createContent = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-
   const { global_link, primary_link, title, content } = req.body;
 
   const newContent = new Content({
@@ -48,14 +46,14 @@ const createContent = asyncHandler(async (req, res) => {
 // @access  Private (requires manager rights)
 const getContents = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
       feature: 'content'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
@@ -94,14 +92,14 @@ const getContentById = asyncHandler(async (req, res) => {
 // @access  Private (requires editor rights)
 const updateContent = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
       feature: 'content'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
@@ -137,14 +135,14 @@ const updateContent = asyncHandler(async (req, res) => {
 // @access  Private (requires manager rights)
 const deleteContent = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
       feature: 'content'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
@@ -174,14 +172,14 @@ const deleteContent = asyncHandler(async (req, res) => {
 // @access  Private (requires publisher rights)
 const togglePublishStatus = asyncHandler(async (req, res) => {
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'content',
       feature: 'content'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }

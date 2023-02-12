@@ -9,14 +9,14 @@ import Permission from "../models/permissionModel.js";
 const getGlobalLinks = asyncHandler(async (req, res) => {
 
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'link',
       feature: 'global_link'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
@@ -54,14 +54,14 @@ const getGlobalLink = asyncHandler(async (req, res) => {
 const addGlobalLink = asyncHandler(async (req, res) => {
   
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'link',
       feature: 'global_link'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
@@ -96,14 +96,14 @@ const addGlobalLink = asyncHandler(async (req, res) => {
 const updateGlobalLink = asyncHandler(async (req, res) => {
   
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'link',
       feature: 'global_link'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }
@@ -158,14 +158,14 @@ const updateGlobalLink = asyncHandler(async (req, res) => {
 const deleteGlobalLink = asyncHandler(async (req, res) => {
   
   const user = req.user;
-  if(!user.name && !user.privilege === "superAdmin"){
+  if(!user.name && user.privilege !== "superAdmin"){
     const permission = await Permission.find({
       subUser: user._id,
       category: 'link',
       feature: 'global_link'
     });
-    console.log(permission);
-    if(!permission){
+    
+    if(permission.length === 0){
       res.status(400);
       throw new Error("You are not authorized to do this");
     }

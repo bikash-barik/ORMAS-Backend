@@ -32,7 +32,7 @@ const addPermissions = asyncHandler(async (req, res) => {
   // Save new permissions
   const savedPermissions = await Promise.all(
     list.map(async(permission) => {
-      const existing = await Permission.find({
+      const existing = await Permission.findOne({
         subUser: permission.subUser,
         feature: permission.feature,
         category: permission.category

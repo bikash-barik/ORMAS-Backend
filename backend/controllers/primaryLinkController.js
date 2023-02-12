@@ -1,11 +1,30 @@
 import asyncHandler from "express-async-handler";
 import PrimaryLink from "../models/primaryLinkModel.js";
+import Permission from "../models/permissionModel.js";
 
 
 // @desc    Get all primary links
 // @route   GET /api/primarylinks
-// @access  Public
+// @access  Private (requires manager rights)
 const getPrimaryLinks = asyncHandler(async (req, res) => {
+  
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'link',
+      feature: 'primary_link'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const primaryLinks = await PrimaryLink.find();
 
   res.status(200).json({
@@ -31,8 +50,26 @@ const getPrimaryLink = asyncHandler(async (req, res) => {
 
 // @desc    Add primary link
 // @route   POST /api/primarylinks
-// @access  Public
+// @access  Private (requires author rights)
 const addPrimaryLink = asyncHandler(async (req, res) => {
+  
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'link',
+      feature: 'primary_link'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].authorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { global_link, link_name, sl_no, link_type, function_name, window_status, publish_status } = req.body;
   
   const newPrimaryLink = new PrimaryLink({
@@ -54,8 +91,26 @@ const addPrimaryLink = asyncHandler(async (req, res) => {
 
 // @desc    Update primary link
 // @route   PUT /api/primarylinks/:id
-// @access  Public
+// @access  Private (requires editor rights)
 const updatePrimaryLink = asyncHandler(async (req, res) => {
+    
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'link',
+      feature: 'primary_link'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].editorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const primaryLinkId = req.params.id;
   
   const primaryLink = await PrimaryLink.findById(primaryLinkId);
@@ -96,8 +151,26 @@ const updatePrimaryLink = asyncHandler(async (req, res) => {
 
 // @desc    Delete primary link
 // @route   DELETE /api/primarylinks/:id
-// @access  Public
+// @access  Private (requires manager rights)
 const deletePrimaryLink = asyncHandler(async (req, res) => {
+    
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'link',
+      feature: 'primary_link'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const primaryLinkId = req.params.id;
   
   const primaryLink = await PrimaryLink.findById(primaryLinkId);
