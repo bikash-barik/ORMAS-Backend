@@ -103,10 +103,10 @@ const DeleteOfficerProfile = asyncHandler(async (req, res) => {
   }
   const officerProfile = await OfficerProfile.findById(req.params.id);
 
-  if (officerProfile.user.toString() !== req.user._id.toString()) {
-    res.status(401);
-    throw new Error("You can't perform this action");
-  }
+  // if (officerProfile.user.toString() !== req.user._id.toString()) {
+  //   res.status(401);
+  //   throw new Error("You can't perform this action");
+  // }
 
   if (officerProfile) {
     await officerProfile.remove();
