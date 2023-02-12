@@ -6,23 +6,23 @@ import asyncHandler from "express-async-handler";
 // @route   GET /api/NewsUpdates
 // @access  Private (requires manager rights)
 const getNewsUpdates = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if(!user.name && user.privilege !== "superAdmin"){
-    const permission = await Permission.find({
-      subUser: user._id,
-      category: 'application',
-      feature: 'news_updates'
-    });
+  // const user = req.user;
+  // if(!user.name && user.privilege !== "superAdmin"){
+  //   const permission = await Permission.find({
+  //     subUser: user._id,
+  //     category: 'application',
+  //     feature: 'news_updates'
+  //   });
     
-    if(permission.length === 0){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-    if(!(permission[0].managerRights === true)){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-  }
+  //   if(permission.length === 0){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  //   if(!(permission[0].managerRights === true)){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  // }
   const newsUpdates = await NewsUpdate.find({ user: req.user._id });
   res.json(newsUpdates);
 });

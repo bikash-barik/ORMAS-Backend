@@ -8,23 +8,23 @@ import Permission from "../../models/permissionModel.js";
 // @access  Private (requires manager rights)
 const getPrimaryLinks = asyncHandler(async (req, res) => {
   
-  const user = req.user;
-  if(!user.name && user.privilege !== "superAdmin"){
-    const permission = await Permission.find({
-      subUser: user._id,
-      category: 'link',
-      feature: 'primary_link'
-    });
+  // const user = req.user;
+  // if(!user.name && user.privilege !== "superAdmin"){
+  //   const permission = await Permission.find({
+  //     subUser: user._id,
+  //     category: 'link',
+  //     feature: 'primary_link'
+  //   });
     
-    if(permission.length === 0){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-    if(!(permission[0].managerRights === true)){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-  }
+  //   if(permission.length === 0){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  //   if(!(permission[0].managerRights === true)){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  // }
   const primaryLinks = await PrimaryLink.find();
 
   res.status(200).json({

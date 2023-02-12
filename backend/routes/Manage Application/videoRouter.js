@@ -4,7 +4,7 @@ import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
 router.post("/", protect, createVideo);
-router.get("/", protect, getVideos);
+router.get("/", getVideos);
 router.get("/:id", getVideo);
 router.put("/:id", protect, updateVideo);
 router.delete("/:id", protect, deleteVideo);

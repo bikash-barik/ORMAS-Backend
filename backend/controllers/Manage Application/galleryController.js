@@ -6,23 +6,23 @@ import asyncHandler from "express-async-handler";
 // @route   GET /api/Gallerys
 // @access  Private (requires manager rights)
 const getGallerys = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if(!user.name && user.privilege !== "superAdmin"){
-    const permission = await Permission.find({
-      subUser: user._id,
-      category: 'application',
-      feature: 'gallery'
-    });
+  // const user = req.user;
+  // if(!user.name && user.privilege !== "superAdmin"){
+  //   const permission = await Permission.find({
+  //     subUser: user._id,
+  //     category: 'application',
+  //     feature: 'gallery'
+  //   });
     
-    if(permission.length === 0){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-    if(!(permission[0].managerRights === true)){
-      res.status(400);
-      throw new Error("You are not authorized to do this");
-    }
-  }
+  //   if(permission.length === 0){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  //   if(!(permission[0].managerRights === true)){
+  //     res.status(400);
+  //     throw new Error("You are not authorized to do this");
+  //   }
+  // }
   const gallerys = await Gallery.find({ user: req.user._id });
   res.json(gallerys);
 });

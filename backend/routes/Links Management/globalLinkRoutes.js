@@ -4,7 +4,7 @@ import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
 router.post("/", protect, addGlobalLink);
-router.get("/", protect, getGlobalLinks);
+router.get("/", getGlobalLinks);
 router.get("/:id", getGlobalLink);
 router.put("/:id", protect, updateGlobalLink);
 router.delete("/:id", protect, deleteGlobalLink);

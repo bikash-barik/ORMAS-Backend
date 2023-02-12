@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 import { protect } from "../../middleware/authMiddleware.js";
 
-router.route("/").get(protect, getOfficerProfiles);
+router.route("/").get(getOfficerProfiles);
 router
   .route("/:id")
   .get(getOfficerProfileById)
