@@ -23,7 +23,8 @@ const getGallerys = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const gallerys = await Gallery.find({ user: req.user._id });
+  // const gallerys = await Gallery.find({ user: req.user._id });
+  const gallerys = await Gallery.find();
   res.json(gallerys);
 });
 
@@ -160,4 +161,4 @@ const UpdateGallery = asyncHandler(async (req, res) => {
   }
 });
 
-export { getGalleryById, getGallerys,CreateGallery,DeleteGallery,UpdateGallery };
+export { getGalleryById, getGallerys, CreateGallery, DeleteGallery, UpdateGallery };

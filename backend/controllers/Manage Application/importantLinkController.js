@@ -23,7 +23,8 @@ const getImportantLinks = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const importantLinks = await ImportantLink.find({ user: req.user._id });
+  // const importantLinks = await ImportantLink.find({ user: req.user._id });
+  const importantLinks = await ImportantLink.find();
   res.json(importantLinks);
 });
 
