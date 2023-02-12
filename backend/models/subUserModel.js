@@ -34,6 +34,7 @@ const subUserSchema = mongoose.Schema(
     },
     username: { //user id in the frontend
       type: String,
+      unique: true,
       required: true
     },
     email: {

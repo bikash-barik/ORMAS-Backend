@@ -4,7 +4,7 @@ import generateToken from "../utils/generateToken.js";
 
 //@description     Auth the user
 //@route           POST /api/subUsers/login
-//@access          Private
+//@access          Private (admin only)
 const authSubUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
@@ -22,13 +22,24 @@ const authSubUser = asyncHandler(async (req, res) => {
 
 //@description     Register new user
 //@route           POST /api/subUsers
-//@access          Private
+//@access          Private (admin only)
 const registerSubUser = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    res.status(400);
+    throw new Error("You are not authorized to do this");
+  }
   const { full_name, sl_no, gender, date_of_birth, image, office_phone, mobile_no, email, username, password, privilege, status } = req.body;
 
-  const subUserExists = await SubUser.findOne({ email });
+  const emailExists = await SubUser.findOne({ email });
 
-  if (subUserExists) {
+  if (emailExists) {
+    res.status(404);
+    throw new Error("SubUser already exists");
+  }
+  const usernameExists = await SubUser.findOne({ username });
+
+  if (usernameExists) {
     res.status(404);
     throw new Error("SubUser already exists");
   }
@@ -72,8 +83,13 @@ const registerSubUser = asyncHandler(async (req, res) => {
 
 // @desc    GET user profile
 // @route   PUT /api/subUsers/profile/:id
-// @access  Private
+// @access  Private (admin only)
 const updateSubUserProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    res.status(400);
+    throw new Error("You are not authorized to do this");
+  }
   const { full_name, sl_no, gender, date_of_birth, image, office_phone, mobile_no, email, password, privilege, status } = req.body;
   const subUser = await SubUser.findById(req.params.id);
 
@@ -114,8 +130,13 @@ const updateSubUserProfile = asyncHandler(async (req, res) => {
 
 // @desc    Toggle status ( active / inactive )
 // @route   PUT /api/users/status/:id
-// @access  Private
+// @access  Private (admin only)
 const toggleStatus = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    res.status(400);
+    throw new Error("You are not authorized to do this");
+  }
   const subUser = await SubUser.findById(req.params.id);
 
   if (subUser) {

@@ -4,8 +4,13 @@ import Permission from "../models/permissionModel.js";
 
 //@description     Add permissions for a user
 //@route           POST /api/permissions/:userId
-//@access          Private
+//@access          Private (admin only)
 const addPermissions = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    res.status(400);
+    throw new Error("You are not authorized to do this");
+  }
   const subUserId = req.params.subUserId;
   const permissions = req.body.permissions;
 
