@@ -4,7 +4,7 @@ import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
 router.post("/", protect, createContent);
-router.get("/", protect, getContents);
+router.get("/", getContents);
 router.get("/:id", getContentById);
 router.put("/:id", protect, updateContent);
 router.delete("/:id", protect, deleteContent);

@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 import { protect } from "../../middleware/authMiddleware.js";
 
-router.route("/").get(protect, getNewsUpdates);
+router.route("/").get(getNewsUpdates);
 router
   .route("/:id")
   .get(getNewsUpdateById)
