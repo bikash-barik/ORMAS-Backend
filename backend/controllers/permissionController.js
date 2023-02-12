@@ -31,7 +31,27 @@ const addPermissions = asyncHandler(async (req, res) => {
 
   // Save new permissions
   const savedPermissions = await Promise.all(
-    list.map(permission => permission.save())
+    list.map(async(permission) => {
+      const existing = await Permission.find({
+        subUser: permission.subUser,
+        feature: permission.feature,
+        category: permission.category
+      })
+      if(existing){
+        return await Permission.findOneAndUpdate({
+          subUser: permission.subUser,
+          feature: permission.feature,
+          category: permission.category
+        }, {
+          authorRights: permission.authorRights,
+          editorRights: permission.editorRights,
+          publisherRights: permission.publisherRights,
+          managerRights: permission.managerRights
+        }, {new: true});
+      } else{
+        return await permission.save();
+      }
+    })
   );
 
   // Return saved permissions

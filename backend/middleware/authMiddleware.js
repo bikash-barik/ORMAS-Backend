@@ -20,7 +20,7 @@ const protect = asyncHandler(async (req, res, next) => {
       if(!user){
         user = await SubUser.findById(decoded.id).select("-password");
       }
-
+      req.user = user;
       next();
     } catch (error) {
       res.status(401);
