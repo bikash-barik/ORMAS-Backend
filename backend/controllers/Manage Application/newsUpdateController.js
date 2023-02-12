@@ -1,10 +1,28 @@
 import NewsUpdate from "../../models/Manage Application/newsUpdateModel.js";
+import Permission from "../../models/permissionModel.js";
 import asyncHandler from "express-async-handler";
 
 // @desc    Get logged in user NewsUpdates
 // @route   GET /api/NewsUpdates
-// @access  Private
+// @access  Private (requires manager rights)
 const getNewsUpdates = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'news_updates'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const newsUpdates = await NewsUpdate.find({ user: req.user._id });
   res.json(newsUpdates);
 });
@@ -26,8 +44,25 @@ const getNewsUpdateById = asyncHandler(async (req, res) => {
 
 //@description     Create single NewsUpdate
 //@route           GET /api/NewsUpdates/create
-//@access          Private
+//@access          Private (requires author rights)
 const CreateNewsUpdate = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'news_updates'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].authorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { headline,expiryDate, uploadDocument, description, status} = req.body;
 
   if (!headline || !expiryDate || !uploadDocument || !description || !status) {
@@ -45,8 +80,25 @@ const CreateNewsUpdate = asyncHandler(async (req, res) => {
 
 //@description     Delete single NewsUpdate
 //@route           GET /api/NewsUpdates/:id
-//@access          Private
+//@access          Private (requires manager rights)
 const DeleteNewsUpdate = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'news_updates'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const newsUpdate = await NewsUpdate.findById(req.params.id);
 
   if (newsUpdate.user.toString() !== req.user._id.toString()) {
@@ -65,8 +117,25 @@ const DeleteNewsUpdate = asyncHandler(async (req, res) => {
 
 // @desc    Update a NewsUpdate
 // @route   PUT /api/NewsUpdates/:id
-// @access  Private
+// @access  Private (requires editor rights)
 const UpdateNewsUpdate = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'news_updates'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].editorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { headline,expiryDate, uploadDocument, description, status} = req.body;
 
   const newsUpdate = await NewsUpdate.findById(req.params.id);
