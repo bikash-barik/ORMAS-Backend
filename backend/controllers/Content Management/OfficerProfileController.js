@@ -1,11 +1,29 @@
 // import OfficerProfile from "../../models/Content Management/OfficerProfileModel";
 import OfficerProfile from "../../models/Content Management/OfficerProfileModel.js";
 import asyncHandler from "express-async-handler";
+import Permission from '../../models/permissionModel.js'
 
 // @desc    Get logged in user OfficerProfiles
 // @route   GET /api/OfficerProfiles
-// @access  Private
+// @access  Private (requires manager rights)
 const getOfficerProfiles = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'officer_profile'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const officerprofiles = await OfficerProfile.find({ user: req.user._id });
   res.json(officerprofiles);
 });
@@ -27,8 +45,25 @@ const getOfficerProfileById = asyncHandler(async (req, res) => {
 
 //@description     Create single OfficerProfile
 //@route           GET /api/OfficerProfiles/create
-//@access          Private
+//@access          Private (requires author rights)
 const CreateOfficerProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'officer_profile'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].authorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { officername,qualification, designation, serial, createdon,photo } = req.body;
 
   if (!officername || !qualification || !designation || !serial || !createdon || !photo) {
@@ -46,8 +81,25 @@ const CreateOfficerProfile = asyncHandler(async (req, res) => {
 
 //@description     Delete single OfficerProfile
 //@route           GET /api/OfficerProfiles/:id
-//@access          Private
+//@access          Private (requires manager rights)
 const DeleteOfficerProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'officer_profile'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const officerProfile = await OfficerProfile.findById(req.params.id);
 
   if (officerProfile.user.toString() !== req.user._id.toString()) {
@@ -66,8 +118,25 @@ const DeleteOfficerProfile = asyncHandler(async (req, res) => {
 
 // @desc    Update a OfficerProfile
 // @route   PUT /api/OfficerProfiles/:id
-// @access  Private
+// @access  Private (requires editor rights)
 const UpdateOfficerProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'officer_profile'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].editorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { officername,qualification, designation, serial, createdon,photo } = req.body;
 
   const officerProfile = await OfficerProfile.findById(req.params.id);

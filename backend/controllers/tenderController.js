@@ -1,11 +1,29 @@
 import asyncHandler from "express-async-handler";
 import Tender from "../models/tenderModel.js";
+import Permission from "../models/permissionModel.js";
 
 
 // @desc    Create tender
 // @route   POST /api/tender
-// @access  Public
+// @access  Private (requires author rights)
 const createTender = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'tender'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].authorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { 
     tender_no,
     tender_headline,
@@ -41,8 +59,25 @@ const createTender = asyncHandler(async (req, res) => {
 
 // @desc    Get all tenders
 // @route   GET /api/tender
-// @access  Public
+// @access  Private (requires manager rights)
 const getTenders = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'tender'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const tenders = await Tender.find();
 
   res.status(200).json({
@@ -68,8 +103,25 @@ const getTender = asyncHandler(async (req, res) => {
 
 // @desc    Update tender
 // @route   PUT /api/tender/:id
-// @access  Public
+// @access  Private (requires editor rights)
 const updateTender = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'tender'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].editorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const tenderId = req.params.id;
   const { tender_no, tender_headline, closing_date, closing_time, opening_date, opening_time, description, document_one, document_two, document_three } = req.body;
   
@@ -100,8 +152,25 @@ const updateTender = asyncHandler(async (req, res) => {
 
 // @desc    Delete tender
 // @route   DELETE /api/tender/:id
-// @access  Public
+// @access  Private (requires manager rights)
 const deleteTender = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'tender'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const tenderId = req.params.id;
   
   const tender = await Tender.findById(tenderId);

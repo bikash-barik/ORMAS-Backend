@@ -1,10 +1,28 @@
 import Document from "../../models/Manage Application/documentModel.js";
+import Permission from "../../models/permissionModel.js";
 import asyncHandler from "express-async-handler";
 
 // @desc    Get logged in user Documents
 // @route   GET /api/Documents
-// @access  Private
+// @access  Private (requires manager rights)
 const getDocuments = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'document'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const documents = await Document.find({ user: req.user._id });
   res.json(documents);
 });
@@ -26,8 +44,25 @@ const getDocumentById = asyncHandler(async (req, res) => {
 
 //@description     Create single Document
 //@route           GET /api/Documents/create
-//@access          Private
+//@access          Private (requires author rights)
 const CreateDocument = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'document'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].authorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { headline,expiryDate, uploadDocument, description, status} = req.body;
 
   if (!headline || !expiryDate || !uploadDocument || !description || !status) {
@@ -45,8 +80,25 @@ const CreateDocument = asyncHandler(async (req, res) => {
 
 //@description     Delete single Document
 //@route           GET /api/Documents/:id
-//@access          Private
+//@access          Private (requires manager rights)
 const DeleteDocument = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'document'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const document = await Document.findById(req.params.id);
 
   if (document.user.toString() !== req.user._id.toString()) {
@@ -65,8 +117,25 @@ const DeleteDocument = asyncHandler(async (req, res) => {
 
 // @desc    Update a Document
 // @route   PUT /api/Documents/:id
-// @access  Private
+// @access  Private (requires editor rights)
 const UpdateDocument = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'document'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].editorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { headline,expiryDate, uploadDocument, description, status} = req.body;
 
   const document = await Document.findById(req.params.id);

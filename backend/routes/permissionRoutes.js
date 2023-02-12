@@ -3,7 +3,7 @@ import { addPermissions, fetchPermissions } from "../controllers/permissionContr
 import { protect } from '../middleware/authMiddleware.js'
 const router = express.Router();
 
-router.route("/:userId").post(protect, addPermissions);
-router.route("/:userId").get(fetchPermissions);
+router.route("/:subUserId").post(protect, addPermissions);
+router.route("/:subUserId").get(fetchPermissions);
 
 export default router;

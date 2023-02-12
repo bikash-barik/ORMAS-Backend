@@ -6,6 +6,7 @@ import path from "path";
 import cors from "cors";
 import noteRoutes from "./routes/noteRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import subUserRoutes from "./routes/subUserRoutes.js";
 import permissionRoutes from "./routes/permissionRoutes.js";
 import globalLinkRoutes from "./routes/globalLinkRoutes.js";
 import primaryLinkRoutes from "./routes/primaryLinkRoutes.js";
@@ -30,6 +31,7 @@ app.use(express.json()); // to accept json data
 app.use("/api/notes", noteRoutes);
 app.use("/api/officersprofiles", officerProfileRouters);
 app.use("/api/users", userRoutes);
+app.use("/api/subUsers", subUserRoutes);
 app.use("/api/permissions", permissionRoutes);
 app.use("/api/globallinks", globalLinkRoutes);
 app.use("/api/primarylinks", primaryLinkRoutes);

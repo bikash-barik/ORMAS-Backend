@@ -7,7 +7,7 @@ const PermissionSchema = new mongoose.Schema({
   editorRights: { type: Boolean },
   publisherRights: { type: Boolean },
   managerRights: { type: Boolean },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  subUser: { type: mongoose.Schema.Types.ObjectId, ref: 'SubUser' }
 });
 
 const Permission = mongoose.model('Permission', PermissionSchema);

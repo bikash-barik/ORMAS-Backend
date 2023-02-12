@@ -1,12 +1,30 @@
 import asyncHandler from "express-async-handler";
 import Content from "../models/contentModel.js";
-
-
+import Permission from "../models/permissionModel.js";
 
 // @desc    Create content
 // @route   POST /api/content
-// @access  Public
+// @access  Private (requires author rights)
 const createContent = asyncHandler(async (req, res) => {
+
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    console.log('hello')
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'content'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].authorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const { global_link, primary_link, title, content } = req.body;
 
   const newContent = new Content({
@@ -25,8 +43,25 @@ const createContent = asyncHandler(async (req, res) => {
 
 // @desc    Get all content
 // @route   GET /api/content
-// @access  Public
+// @access  Private (requires manager rights)
 const getContents = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'content'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const contents = await Content.find();
 
   res.status(200).json({
@@ -54,8 +89,25 @@ const getContentById = asyncHandler(async (req, res) => {
 
 // @desc    Update content
 // @route   PUT /api/content/:id
-// @access  Public
+// @access  Private (requires editor rights)
 const updateContent = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'content'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].editorRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const contentId = req.params.id;
   const { global_link, primary_link, title, content } = req.body;
 
@@ -80,8 +132,25 @@ const updateContent = asyncHandler(async (req, res) => {
 
 // @desc    Delete content
 // @route   DELETE /api/content/:id
-// @access  Public
+// @access  Private (requires manager rights)
 const deleteContent = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'content'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const contentId = req.params.id;
 
   const contentToDelete = await Content.findById(contentId);
@@ -100,8 +169,25 @@ const deleteContent = asyncHandler(async (req, res) => {
 
 // @desc    Toggle publish status of content
 // @route   PUT /api/content/status/:id
-// @access  Public
+// @access  Private (requires publisher rights)
 const togglePublishStatus = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'content',
+      feature: 'content'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].publisherRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
   const contentId = req.params.id;
 
   const content = await Content.findById(contentId);
