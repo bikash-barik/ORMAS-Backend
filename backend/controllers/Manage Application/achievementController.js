@@ -63,7 +63,12 @@ const getAchievements = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const achievements = await Achievement.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {home_page_status: "set"};
+  }
+  const achievements = await Achievement.find(query);
 
   res.status(200).json({
     achievements,
@@ -189,10 +194,10 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
   const achievement = await Achievement.findById(achievementId);
 
   if (achievement) {
-    if (achievement.publish_status === "active") {
-      achievement.publish_status = "inactive";
+    if (achievement.home_page_status === "set") {
+      achievement.home_page_status = "unset";
     } else {
-      achievement.publish_status = "active";
+      achievement.home_page_status = "set";
     }
     const updatedAchievement = await achievement.save();
     res.status(200).json({

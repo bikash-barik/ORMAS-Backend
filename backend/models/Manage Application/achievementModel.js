@@ -5,7 +5,7 @@ const AchievementSchema = new mongoose.Schema({
   achievement_name: { type: String },
   snippet: { type: String },
   description: { type: String },
-  home_page_status: { type: String },
+  home_page_status: { type: String, default: "unset" },
   publish_status: { type: String },
   timestamp: { type: Date, default: Date.now },
 });
