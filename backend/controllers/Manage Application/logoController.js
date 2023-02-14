@@ -45,7 +45,12 @@ const createLogo = asyncHandler(async (req, res) => {
 // @route GET /api/logo
 // @access Private (requires manager rights)
 const getLogos = asyncHandler(async (req, res) => {
-  const logos = await Logo.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {home_page_status: "set"};
+  }
+  const logos = await Logo.find(query);
 
   res.status(200).json({
     logos,
@@ -166,8 +171,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("Logo Not Found");
   }
 
-  logo.publish_status =
-    logo.publish_status === "active" ? "inactive" : "active";
+  logo.home_page_status =
+    logo.home_page_status === "set" ? "unset" : "set";
 
   await logo.save();
 

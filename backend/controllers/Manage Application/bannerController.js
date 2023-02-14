@@ -45,7 +45,12 @@ const createBanner = asyncHandler(async (req, res) => {
 // @route GET /api/banner
 // @access Private (requires manager rights)
 const getBanners = asyncHandler(async (req, res) => {
-  const banners = await Banner.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {home_page_status: "set"};
+  }
+  const banners = await Banner.find(query);
 
   res.status(200).json({
     banners,
@@ -166,8 +171,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("Banner Not Found");
   }
 
-  banner.publish_status =
-    banner.publish_status === "active" ? "inactive" : "active";
+  banner.home_page_status =
+    banner.home_page_status === "set" ? "unset" : "set";
 
   await banner.save();
 

@@ -46,7 +46,12 @@ const createWhatsNew = asyncHandler(async (req, res) => {
 // @route GET /api/whatsNew
 // @access Private (requires manager rights)
 const getWhatsNews = asyncHandler(async (req, res) => {
-  const whatsNews = await WhatsNew.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {home_page_status: "set"};
+  }
+  const whatsNews = await WhatsNew.find(query);
 
   res.status(200).json({
     whatsNews,
@@ -167,8 +172,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("WhatsNew Not Found");
   }
 
-  whatsNew.publish_status =
-    whatsNew.publish_status === "active" ? "inactive" : "active";
+  whatsNew.home_page_status =
+    whatsNew.home_page_status === "set" ? "unset" : "set";
 
   await whatsNew.save();
 
