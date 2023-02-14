@@ -9,7 +9,6 @@ const VideoSchema = new mongoose.Schema({
   video: { type: String },
   description: { type: String },
   home_page_status: { type: String, default: "unset" },
-  publish_status: { type: String, default: "inactive" },
   timestamp: { type: Date, default: Date.now },
 });
 const Video = mongoose.model("Video", VideoSchema);

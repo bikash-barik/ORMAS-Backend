@@ -5,7 +5,6 @@ const LogoSchema = new mongoose.Schema({
   logo_title: { type: String },
   photo: { type: String },
   home_page_status: { type: String, default: "unset" },
-  publish_status: { type: String },
   timestamp: { type: Date, default: Date.now },
 });
 const Logo = mongoose.model("Logo", LogoSchema);

@@ -6,7 +6,6 @@ const AchievementSchema = new mongoose.Schema({
   snippet: { type: String },
   description: { type: String },
   home_page_status: { type: String, default: "unset" },
-  publish_status: { type: String },
   timestamp: { type: Date, default: Date.now },
 });
 const Achievement = mongoose.model("Achievement", AchievementSchema);
