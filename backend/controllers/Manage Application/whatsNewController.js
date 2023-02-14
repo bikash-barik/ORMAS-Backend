@@ -24,14 +24,14 @@ const createWhatsNew = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const { sl_no, headline, description, document, home_page_status, publish_status } = req.body;
+  const { sl_no, headline, description, document, publish_status } = req.body;
 
   const newWhatsNew = new WhatsNew({
     sl_no,
     headline,
     description,
     document,
-    home_page_status,
+    publish_status,
     publish_status
   });
 
@@ -49,7 +49,7 @@ const getWhatsNews = asyncHandler(async (req, res) => {
   const status = req.query.status;
   let query = {};
   if(status==="set"){
-    query = {home_page_status: "set"};
+    query = {publish_status: "set"};
   }
   const whatsNews = await WhatsNew.find(query);
 
@@ -172,8 +172,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("WhatsNew Not Found");
   }
 
-  whatsNew.home_page_status =
-    whatsNew.home_page_status === "set" ? "unset" : "set";
+  whatsNew.publish_status =
+    whatsNew.publish_status === "set" ? "unset" : "set";
 
   await whatsNew.save();
 

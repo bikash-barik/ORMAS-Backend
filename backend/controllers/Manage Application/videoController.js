@@ -31,7 +31,7 @@ const createVideo = asyncHandler(async (req, res) => {
     thumb_image,
     video,
     description,
-    home_page_status,
+    publish_status,
   } = req.body;
 
   const newVideo = new Video({
@@ -41,7 +41,7 @@ const createVideo = asyncHandler(async (req, res) => {
     thumb_image,
     video,
     description,
-    home_page_status,
+    publish_status,
   });
 
   await newVideo.save();
@@ -75,7 +75,7 @@ const getVideos = asyncHandler(async (req, res) => {
   const status = req.query.status;
   let query = {};
   if(status==="set"){
-    query = {home_page_status: "set"};
+    query = {publish_status: "set"};
   }
   const videos = await Video.find(query);
 
@@ -201,10 +201,10 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     const video = await Video.findById(videoId);
 
     if (video) {
-        if (video.home_page_status === "set") {
-            video.home_page_status = "unset";
+        if (video.publish_status === "set") {
+            video.publish_status = "unset";
         } else {
-            video.home_page_status = "set";
+            video.publish_status = "set";
         }
         const updatedVideo = await video.save();
         res.status(200).json({

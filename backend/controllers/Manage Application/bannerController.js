@@ -24,13 +24,13 @@ const createBanner = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const { sl_no, caption, banner, home_page_status, publish_status } = req.body;
+  const { sl_no, caption, banner, publish_status } = req.body;
 
   const newBanner = new Banner({
     sl_no,
     caption,
     banner,
-    home_page_status,
+    publish_status,
     publish_status
   });
 
@@ -48,7 +48,7 @@ const getBanners = asyncHandler(async (req, res) => {
   const status = req.query.status;
   let query = {};
   if(status==="set"){
-    query = {home_page_status: "set"};
+    query = {publish_status: "set"};
   }
   const banners = await Banner.find(query);
 
@@ -171,8 +171,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("Banner Not Found");
   }
 
-  banner.home_page_status =
-    banner.home_page_status === "set" ? "unset" : "set";
+  banner.publish_status =
+    banner.publish_status === "set" ? "unset" : "set";
 
   await banner.save();
 

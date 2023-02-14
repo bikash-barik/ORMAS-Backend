@@ -81,7 +81,7 @@ const getTenders = asyncHandler(async (req, res) => {
   const status = req.query.status;
   let query = {};
   if(status==="set"){
-    query = {home_page_status: "set"};
+    query = {publish_status: "set"};
   }
   const tenders = await Tender.find(query);
 
@@ -222,8 +222,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("Tender Not Found");
   }
 
-  tender.home_page_status =
-    tender.home_page_status === "set" ? "unset" : "set";
+  tender.publish_status =
+    tender.publish_status === "set" ? "unset" : "set";
 
   await tender.save();
 
@@ -232,4 +232,4 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
   });
 });
 
-export { getTender, getTenders, createTender, updateTender, deleteTender };
+export { getTender, getTenders, createTender, updateTender, deleteTender, togglePublishStatus };

@@ -5,7 +5,7 @@ const WhatsNewSchema = new mongoose.Schema({
   headline: { type: String },
   description: { type: String },
   document: { type: String },
-  home_page_status: { type: String, default: "unset" },
+  publish_status: { type: String, default: "unset" },
   timestamp: { type: Date, default: Date.now },
 });
 const WhatsNew = mongoose.model("WhatsNew", WhatsNewSchema);
