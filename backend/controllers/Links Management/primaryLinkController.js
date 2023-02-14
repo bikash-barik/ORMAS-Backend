@@ -25,8 +25,14 @@ const getPrimaryLinks = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const primaryLinks = await PrimaryLink.find();
-
+  let primaryLinks;
+  const globalLink = req.query.globalLink
+  if(globalLink){
+    primaryLinks = await PrimaryLink.find({ global_link :globalLink});
+    
+  } else{
+    primaryLinks = await PrimaryLink.find();
+  }
   res.status(200).json({
     primaryLinks
   });
