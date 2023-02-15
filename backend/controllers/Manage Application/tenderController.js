@@ -78,7 +78,12 @@ const getTenders = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const tenders = await Tender.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {publish_status: "set"};
+  }
+  const tenders = await Tender.find(query);
 
   res.status(200).json({
     tenders,
@@ -188,4 +193,43 @@ const deleteTender = asyncHandler(async (req, res) => {
 });
 
 
-export { getTender, getTenders, createTender, updateTender, deleteTender };
+// @desc Toggle Status for Banner
+// @route PUT /api/tenders/:id/status
+// @access Private (requires editor rights)
+const togglePublishStatus = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user.name && user.privilege !== "superAdmin") {
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: "application",
+      feature: "tender",
+    });
+
+    if (permission.length === 0) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if (!(permission[0].editorRights === true)) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
+
+  const tender = await Tender.findById(req.params.id);
+
+  if (!tender) {
+    res.status(404);
+    throw new Error("Tender Not Found");
+  }
+
+  tender.publish_status =
+    tender.publish_status === "set" ? "unset" : "set";
+
+  await tender.save();
+
+  res.status(200).json({
+    tender: tender,
+  });
+});
+
+export { getTender, getTenders, createTender, updateTender, deleteTender, togglePublishStatus };

@@ -8,8 +8,7 @@ const VideoSchema = new mongoose.Schema({
   thumb_image: { type: String },
   video: { type: String },
   description: { type: String },
-  home_page_status: { type: String },
-  publish_status: { type: String, default: "inactive" },
+  publish_status: { type: String, default: "unset" },
   timestamp: { type: Date, default: Date.now },
 });
 const Video = mongoose.model("Video", VideoSchema);

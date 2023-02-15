@@ -24,13 +24,13 @@ const createLogo = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const { sl_no, logo_title, photo, home_page_status, publish_status } = req.body;
+  const { sl_no, logo_title, photo, publish_status, publish_status } = req.body;
 
   const newLogo = new Logo({
     sl_no,
     logo_title,
     photo,
-    home_page_status,
+    publish_status,
     publish_status
   });
 
@@ -45,7 +45,12 @@ const createLogo = asyncHandler(async (req, res) => {
 // @route GET /api/logo
 // @access Private (requires manager rights)
 const getLogos = asyncHandler(async (req, res) => {
-  const logos = await Logo.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {publish_status: "set"};
+  }
+  const logos = await Logo.find(query);
 
   res.status(200).json({
     logos,
@@ -167,7 +172,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
   }
 
   logo.publish_status =
-    logo.publish_status === "active" ? "inactive" : "active";
+    logo.publish_status === "set" ? "unset" : "set";
 
   await logo.save();
 

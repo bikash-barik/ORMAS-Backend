@@ -24,13 +24,13 @@ const createBanner = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const { sl_no, caption, banner, home_page_status, publish_status } = req.body;
+  const { sl_no, caption, banner, publish_status } = req.body;
 
   const newBanner = new Banner({
     sl_no,
     caption,
     banner,
-    home_page_status,
+    publish_status,
     publish_status
   });
 
@@ -45,7 +45,12 @@ const createBanner = asyncHandler(async (req, res) => {
 // @route GET /api/banner
 // @access Private (requires manager rights)
 const getBanners = asyncHandler(async (req, res) => {
-  const banners = await Banner.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {publish_status: "set"};
+  }
+  const banners = await Banner.find(query);
 
   res.status(200).json({
     banners,
@@ -167,7 +172,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
   }
 
   banner.publish_status =
-    banner.publish_status === "active" ? "inactive" : "active";
+    banner.publish_status === "set" ? "unset" : "set";
 
   await banner.save();
 

@@ -195,4 +195,43 @@ const deletePrimaryLink = asyncHandler(async (req, res) => {
   });
 });
 
-export { getPrimaryLink, getPrimaryLinks, addPrimaryLink, deletePrimaryLink, updatePrimaryLink };
+// @desc Toggle Status for PrimaryLink
+// @route PUT /api/globallinks/:id/status
+// @access Private (requires editor rights)
+const togglePublishStatus = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user.name && user.privilege !== "superAdmin") {
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: "application",
+      feature: "banner",
+    });
+
+    if (permission.length === 0) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if (!(permission[0].editorRights === true)) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
+
+  const primaryLink = await PrimaryLink.findById(req.params.id);
+
+  if (!primaryLink) {
+    res.status(404);
+    throw new Error("PrimaryLink Not Found");
+  }
+
+  primaryLink.publish_status =
+    primaryLink.publish_status === "set" ? "unset" : "set";
+
+  await primaryLink.save();
+
+  res.status(200).json({
+    primaryLink: primaryLink,
+  });
+});
+
+export { getPrimaryLink, getPrimaryLinks, addPrimaryLink, deletePrimaryLink, updatePrimaryLink, togglePublishStatus };

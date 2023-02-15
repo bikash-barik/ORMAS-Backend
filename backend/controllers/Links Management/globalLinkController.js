@@ -192,4 +192,44 @@ const deleteGlobalLink = asyncHandler(async (req, res) => {
   });
 });
 
-export { getGlobalLinks, getGlobalLink, addGlobalLink, updateGlobalLink, deleteGlobalLink };
+
+// @desc Toggle Status for GlobalLink
+// @route PUT /api/globallinks/:id/status
+// @access Private (requires editor rights)
+const togglePublishStatus = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user.name && user.privilege !== "superAdmin") {
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: "application",
+      feature: "banner",
+    });
+
+    if (permission.length === 0) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if (!(permission[0].editorRights === true)) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
+
+  const globalLink = await GlobalLink.findById(req.params.id);
+
+  if (!globalLink) {
+    res.status(404);
+    throw new Error("GlobalLink Not Found");
+  }
+
+  globalLink.publish_status =
+    globalLink.publish_status === "set" ? "unset" : "set";
+
+  await globalLink.save();
+
+  res.status(200).json({
+    globalLink: globalLink,
+  });
+});
+
+export { getGlobalLinks, getGlobalLink, addGlobalLink, updateGlobalLink, togglePublishStatus, deleteGlobalLink };

@@ -41,6 +41,7 @@ const TenderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  publish_status: { type: String, default: "unset" },
 });
 
 const Tender =  mongoose.model("Tender", TenderSchema);
