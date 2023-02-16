@@ -1,5 +1,5 @@
 {
-  "name": "ORMAS backend",
+  "name": "ORMASbackend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -22,7 +22,8 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^5.10.15"
+    "mongoose": "^5.10.15",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

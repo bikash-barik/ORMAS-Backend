@@ -3,7 +3,7 @@ import { createBanner, deleteBanner, getBanner, getBanners, togglePublishStatus,
 import { protect } from '../../middleware/authMiddleware.js'
 const router = express.Router();
 
-router.post("/", protect, createBanner);
+router.post("/create", protect, createBanner);
 router.get("/", getBanners);
 router.get("/:id", getBanner);
 router.put("/:id", protect, updateBanner);
