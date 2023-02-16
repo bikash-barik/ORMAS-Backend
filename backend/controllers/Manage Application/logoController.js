@@ -24,7 +24,7 @@ const createLogo = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const { sl_no, logo_title, photo, publish_status, publish_status } = req.body;
+  const { sl_no, logo_title, photo, publish_status } = req.body;
 
   const newLogo = new Logo({
     sl_no,
