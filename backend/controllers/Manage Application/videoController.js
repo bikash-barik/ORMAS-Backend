@@ -31,7 +31,7 @@ const createVideo = asyncHandler(async (req, res) => {
     thumb_image,
     video,
     description,
-    home_page_status,
+    publish_status,
   } = req.body;
 
   const newVideo = new Video({
@@ -41,7 +41,7 @@ const createVideo = asyncHandler(async (req, res) => {
     thumb_image,
     video,
     description,
-    home_page_status,
+    publish_status,
   });
 
   await newVideo.save();
@@ -72,7 +72,12 @@ const getVideos = asyncHandler(async (req, res) => {
   //     throw new Error("You are not authorized to do this");
   //   }
   // }
-  const videos = await Video.find();
+  const status = req.query.status;
+  let query = {};
+  if(status==="set"){
+    query = {publish_status: "set"};
+  }
+  const videos = await Video.find(query);
 
   res.status(200).json({
     videos,
@@ -196,10 +201,10 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     const video = await Video.findById(videoId);
 
     if (video) {
-        if (video.publish_status === "active") {
-            video.publish_status = "inactive";
+        if (video.publish_status === "set") {
+            video.publish_status = "unset";
         } else {
-            video.publish_status = "active";
+            video.publish_status = "set";
         }
         const updatedVideo = await video.save();
         res.status(200).json({
