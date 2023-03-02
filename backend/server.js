@@ -32,7 +32,7 @@ dotenv.config();
 connectDB();
 
 const app = express(); // main thing
-app.use(cors({origin: 'https://ormas-application.vercel.app/'}));
+app.use(cors());
 // app.use(cors({origin: 'https://websyetem.online'}));http://localhost:5000/
 app.use(express.json()); // to accept json data
 
