@@ -1,5 +1,5 @@
 import express from "express";
-import { getGallerys, getGalleryById, CreateGallery, UpdateGallery, DeleteGallery } from "../../controllers/Manage Application/galleryController.js";
+import { getGallerys, getGalleryById, CreateGallery, UpdateGallery, DeleteGallery, DeleteGalleries } from "../../controllers/Manage Application/galleryController.js";
 const router = express.Router();
 import { protect } from "../../middleware/authMiddleware.js";
 
@@ -7,8 +7,8 @@ router.route("/").get(getGallerys);
 router
   .route("/:id")
   .get(getGalleryById)
-  .delete(protect, UpdateGallery)
-  .put(protect, DeleteGallery);
+  .put(protect, UpdateGallery)
+  .delete(protect, DeleteGallery);
 router.route("/create").post(protect, CreateGallery);
-
+router.route("/delete-multiple").post(protect, DeleteGalleries);
 export default router;

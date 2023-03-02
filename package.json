@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "14.x"
+  },
   "type": "module",
   "scripts": {
     "start": "node backend/server",
@@ -12,7 +15,7 @@
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
-  "author": "Piyush Agarwal",
+  "author": "Biaksh Barik",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -137,28 +137,64 @@ const UpdateGallery = asyncHandler(async (req, res) => {
       throw new Error("You are not authorized to do this");
     }
   }
-  const { headline,category, photo, status} = req.body;
+  const { headline, category, photo, status} = req.body;
 
   const gallery = await Gallery.findById(req.params.id);
 
-  if (gallery.user.toString() !== req.user._id.toString()) {
-    res.status(401);
-    throw new Error("You can't perform this action");
-  }
-
   if (gallery) {
-    gallery.headline = headline;
-    gallery.photo = photo;
-    gallery.category = category;
-    gallery.status = status;
-   
+    gallery.headline = headline || gallery.headline;
+    gallery.category = category || gallery.category;
+    gallery.photo = photo || gallery.photo;
+    gallery.status = status || gallery.status;
 
     const updatedGallery = await gallery.save();
+
     res.json(updatedGallery);
   } else {
     res.status(404);
-    throw new Error("Gallery not found");
+    throw new Error("gallery not Found");
   }
 });
 
-export { getGalleryById, getGallerys, CreateGallery, DeleteGallery, UpdateGallery };
+
+const DeleteGalleries = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if(!user.name && user.privilege !== "superAdmin"){
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: 'application',
+      feature: 'gallery'
+    });
+    
+    if(permission.length === 0){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if(!(permission[0].managerRights === true)){
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
+  const galleryIds = req.body.galleryIds; // An array of gallery ids
+  const galleries = await Gallery.find({ _id: { $in: galleryIds } });
+
+  // Check if all galleries belong to the logged-in user
+  const invalidGalleries = galleries.filter(
+    gallery => gallery.user.toString() !== req.user._id.toString()
+  );
+  if (invalidGalleries.length > 0) {
+    res.status(401);
+    throw new Error("You can't perform this action on some galleries");
+  }
+
+  const deleteResult = await Gallery.deleteMany({ _id: { $in: galleryIds } });
+  if (deleteResult.deletedCount === 0) {
+    res.status(404);
+    throw new Error("No galleries were found with the provided ids");
+  }
+  
+  res.json({ message: `${deleteResult.deletedCount} galleries were deleted` });
+});
+
+
+export { getGalleryById, getGallerys, CreateGallery, DeleteGallery, UpdateGallery ,DeleteGalleries};

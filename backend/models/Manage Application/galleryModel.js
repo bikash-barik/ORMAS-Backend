@@ -1,3 +1,5 @@
+
+
 import mongoose from "mongoose";
 
 const gallerySchema = mongoose.Schema(
@@ -13,7 +15,8 @@ const gallerySchema = mongoose.Schema(
     photo: {
       type: String,
       required: true,
-      default:""
+      default:
+        "",
     },
     status:{
        type:Boolean,

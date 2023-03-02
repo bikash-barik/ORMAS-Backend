@@ -33,6 +33,7 @@ connectDB();
 
 const app = express(); // main thing
 app.use(cors());
+// app.use(cors({origin: 'https://websyetem.online'}));http://localhost:5000/
 app.use(express.json()); // to accept json data
 
 app.use("/api/notes", noteRoutes);
@@ -55,7 +56,7 @@ app.use("/api/banners", bannerRoutes);
 app.use("/api/achievements", achievementRoutes);
 app.use("/api/whatsNews", whatsNewRoutes);
 app.use("/api/feedbacks", feedbackRoutes);
-app.use("/api/gallerys", galleryRouters);galleryRouters
+app.use("/api/gallerys", galleryRouters);
 
 // --------------------------deployment------------------------------
 const __dirname = path.resolve();
