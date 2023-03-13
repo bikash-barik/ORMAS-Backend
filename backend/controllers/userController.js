@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import SubUser from "../models/subUserModel.js";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 
@@ -9,6 +10,7 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+  const subUser = await SubUser.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
     res.json({
@@ -19,10 +21,30 @@ const authUser = asyncHandler(async (req, res) => {
       pic: user.pic,
       token: generateToken(user._id),
     });
-  } else {
+  } else if (subUser && (await subUser.matchPassword(password))) {
+    res.json({
+      _id: subUser._id,
+      full_name: subUser.full_name,
+      sl_no: subUser.sl_no,
+      gender: subUser.gender,
+      date_of_birth: subUser.date_of_birth,
+      pic: subUser.pic,
+      office_phone: subUser.office_phone,
+      mobile_no: subUser.mobile_no,
+      email: subUser.email,
+      username: subUser.username,
+      privilege: subUser.privilege,
+      status: subUser.status,
+      token: generateToken(subUser._id),
+    });
+  } 
+  else {
     res.status(401);
     throw new Error("Invalid Email or Password");
   }
+
+  
+
 });
 
 //@description     Register new user
@@ -60,8 +82,8 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    GET user profile
-// @route   GET /api/users/profile
+// @desc    Update user profile
+// @route   Update /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);

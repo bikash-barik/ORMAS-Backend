@@ -197,4 +197,53 @@ const DeleteGalleries = asyncHandler(async (req, res) => {
 });
 
 
-export { getGalleryById, getGallerys, CreateGallery, DeleteGallery, UpdateGallery ,DeleteGalleries};
+
+
+// @desc Toggle Status for gallery
+// @route PUT /api/tenders/:id/status
+// @access Private (requires editor rights)
+const togglePublishStatus = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user.name && user.privilege !== "superAdmin") {
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: "application",
+      feature: "tender",
+    });
+
+    if (permission.length === 0) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if (!(permission[0].editorRights === true)) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
+
+  const gallery = await Gallery.findById(req.params.id);
+
+  if (!gallery) {
+    res.status(404);
+    throw new Error("Tender Not Found");
+  }
+
+
+  if (gallery.status === true) {
+    gallery.status = false;
+  } else if (gallery.status === false) {
+    gallery.status = true;
+  }
+
+  // gallery.publish_status =
+  //   gallery.publish_status === "set" ? "unset" : "set";
+
+  await gallery.save();
+
+  res.status(200).json({
+    gallery: gallery,
+  });
+});
+
+
+export { getGalleryById,togglePublishStatus, getGallerys, CreateGallery, DeleteGallery, UpdateGallery ,DeleteGalleries};

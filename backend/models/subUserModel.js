@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const subUserSchema = mongoose.Schema(
   {
-    full_name: {
+    name: {
       type: String,
       required: true
     },
@@ -19,7 +19,7 @@ const subUserSchema = mongoose.Schema(
       type: Date,
       required: true
     },
-    image: {
+    pic: {
       type: String,
       required: true,
       default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"

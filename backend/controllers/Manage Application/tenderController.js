@@ -222,8 +222,15 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("Tender Not Found");
   }
 
-  tender.publish_status =
-    tender.publish_status === "set" ? "unset" : "set";
+
+  if (tender.publish_status === "set") {
+    tender.publish_status = "unset";
+  } else if (tender.publish_status === "unset") {
+    tender.publish_status = "set";
+  }
+
+  // tender.publish_status =
+  //   tender.publish_status === "set" ? "unset" : "set";
 
   await tender.save();
 

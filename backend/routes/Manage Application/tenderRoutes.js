@@ -7,7 +7,7 @@ router.post("/create", protect, createTender);
 router.get("/", getTenders);
 router.get("/:id", getTender);
 router.put("/:id", protect, updateTender);
-router.put("status/:id", protect, togglePublishStatus);
+router.put("/status/:id", protect, togglePublishStatus);
 router.delete("/:id", protect, deleteTender);
 
 export default router;

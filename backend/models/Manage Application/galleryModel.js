@@ -20,8 +20,7 @@ const gallerySchema = mongoose.Schema(
     },
     status:{
        type:Boolean,
-       required: true,
-       default: true,
+       default: 0,
     },
    
     user: {
