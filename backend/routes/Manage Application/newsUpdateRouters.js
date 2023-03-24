@@ -5,6 +5,7 @@ import {
   CreateNewsUpdate,
   DeleteNewsUpdate,
   UpdateNewsUpdate,
+  togglePublishStatus,
 } from "../../controllers/Manage Application/newsUpdateController.js";
 const router = express.Router();
 import { protect } from "../../middleware/authMiddleware.js";
@@ -16,5 +17,6 @@ router
   .delete(protect, DeleteNewsUpdate)
   .put(protect, UpdateNewsUpdate);
 router.route("/create").post(protect, CreateNewsUpdate);
+router.put("/status/:id", protect, togglePublishStatus);
 
 export default router;

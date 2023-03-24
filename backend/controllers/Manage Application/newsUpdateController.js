@@ -162,4 +162,52 @@ const UpdateNewsUpdate = asyncHandler(async (req, res) => {
   }
 });
 
-export { getNewsUpdateById, getNewsUpdates,CreateNewsUpdate,DeleteNewsUpdate,UpdateNewsUpdate };
+
+// @desc Toggle Status for gallery
+// @route PUT /api/tenders/:id/status
+// @access Private (requires editor rights)
+const togglePublishStatus = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user.name && user.privilege !== "superAdmin") {
+    const permission = await Permission.find({
+      subUser: user._id,
+      category: "application",
+      feature: "news_updates",
+    });
+
+    if (permission.length === 0) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+    if (!(permission[0].editorRights === true)) {
+      res.status(400);
+      throw new Error("You are not authorized to do this");
+    }
+  }
+
+  const newsUpdate = await NewsUpdate.findById(req.params.id);
+
+  if (!newsUpdate) {
+    res.status(404);
+    throw new Error("Tender Not Found");
+  }
+
+
+  if (newsUpdate.status === true) {
+    newsUpdate.status = false;
+  } else if (newsUpdate.status === false) {
+    newsUpdate.status = true;
+  }
+
+  // newsUpdate.publish_status =
+  //   newsUpdate.publish_status === "set" ? "unset" : "set";
+
+  await newsUpdate.save();
+
+  res.status(200).json({
+    newsUpdate: newsUpdate,
+  });
+});
+
+
+export { togglePublishStatus,getNewsUpdateById, getNewsUpdates,CreateNewsUpdate,DeleteNewsUpdate,UpdateNewsUpdate };

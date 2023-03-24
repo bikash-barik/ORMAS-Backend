@@ -171,8 +171,15 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     throw new Error("Banner Not Found");
   }
 
-  banner.publish_status =
-    banner.publish_status === "set" ? "unset" : "set";
+
+  
+  if (banner.publish_status === "set") {
+    banner.publish_status = "unset";
+  } else if (banner.publish_status === "unset") {
+    banner.publish_status = "set";
+  }
+  // banner.publish_status =
+  //   banner.publish_status === "set" ? "unset" : "set";
 
   await banner.save();
 
